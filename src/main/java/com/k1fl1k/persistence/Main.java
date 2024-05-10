@@ -1,0 +1,69 @@
+package com.k1fl1k.persistence;
+
+import com.k1fl1k.persistence.context.factory.PersistenceContext;
+import com.k1fl1k.persistence.entity.Users;
+import com.k1fl1k.persistence.entity.Users.UsersRole;
+import com.k1fl1k.persistence.util.ConnectionManager;
+import com.k1fl1k.persistence.util.DatabaseInitializer;
+import java.util.UUID;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class Main {
+
+    private static BeanFactory context;
+
+    public static void main(String[] args) {
+        var context = new AnnotationConfigApplicationContext(PersistenceConfig.class);
+        var connectionManager = context.getBean(ConnectionManager.class);
+        var databaseInitializer = context.getBean(DatabaseInitializer.class);
+
+        try {
+            databaseInitializer.init();
+            var persistenceContext = context.getBean(PersistenceContext.class);
+            persistenceContext.users.registerNew(
+                new Users(
+                    null, // UUID тепер на першому місці
+                    "k1fl1k",
+                    "password",
+                    UsersRole.ADMIN,
+                    "Name"));
+
+            persistenceContext.users.registerNew(
+                new Users(
+                    null,
+                    "krnelx",
+                    "password2",
+                    UsersRole.ADMIN,
+                    "ім'я"));
+
+            persistenceContext.users.commit();
+
+            persistenceContext.users.registerModified(
+                new Users(UUID.fromString("018f39f9-1826-7cb9-9775-feee72794e6a"),
+                    "mike_wilson1",
+                    "mike.wilson@gmail.com",
+                    UsersRole.CLIENT,
+                    "password5")
+            );
+
+            persistenceContext.users.registerModified(
+                new Users(UUID.fromString("018f39f9-05de-704c-bdc4-9fb5e1432e19"),
+                    "emily_brown2",
+                    "emily.brown2@gmail.com",
+                    UsersRole.MODER,
+                    "password5")
+            );
+
+            persistenceContext.users.commit();
+
+            persistenceContext.users.registerDeleted(
+                UUID.fromString("018f39f8-6850-75d3-b6b1-be865de4d061"));
+            persistenceContext.users.registerDeleted(
+                UUID.fromString("018f39f8-8697-7a1a-93ab-5d42d7b42dd5"));
+            persistenceContext.users.commit();
+        } finally {
+            connectionManager.closePool();
+        }
+    }
+}
