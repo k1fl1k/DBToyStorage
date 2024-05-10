@@ -313,7 +313,7 @@ public abstract class GenericJdbcRepository<T extends Entity> implements Reposit
         List<String> attributes = tableAttributes();
         List<String> nonKeyAttributes = attributes.stream()
             .filter(a -> !a.equals("id") && !a.contains("created_at"))
-            .collect(Collectors.toList());
+            .toList();
 
         String setClause =
             nonKeyAttributes.stream()

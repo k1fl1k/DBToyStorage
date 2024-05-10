@@ -6,12 +6,9 @@ import com.k1fl1k.persistence.entity.Users.UsersRole;
 import com.k1fl1k.persistence.util.ConnectionManager;
 import com.k1fl1k.persistence.util.DatabaseInitializer;
 import java.util.UUID;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main {
-
-    private static BeanFactory context;
 
     public static void main(String[] args) {
         var context = new AnnotationConfigApplicationContext(PersistenceConfig.class);

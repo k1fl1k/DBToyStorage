@@ -77,7 +77,6 @@ public abstract class GenericUnitOfWork<T extends Entity> implements UnitOfWork<
         context.clear();
     }
 
-    // TODO: refactor - batch insert!
     private void commitInsert() {
         var entitiesToBeInserted = context.get(UnitActions.INSERT);
         repository.save(entitiesToBeInserted);

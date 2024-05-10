@@ -18,14 +18,12 @@ import org.springframework.stereotype.Repository;
 public class SectionsRepositoryImpl extends GenericJdbcRepository<Sections> implements
     SectionsRepository {
     private final ConnectionManager connectionManager;
-    private final SectionRowMapper sectionRowMapper;
 
     public SectionsRepositoryImpl(
         ConnectionManager connectionManager,
         SectionRowMapper sectionRowMapper) {
         super(connectionManager, sectionRowMapper, TableNames.SECTIONS.getName());
         this.connectionManager = connectionManager;
-        this.sectionRowMapper = sectionRowMapper;
     }
 
     @Override

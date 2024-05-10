@@ -4,7 +4,6 @@ import com.k1fl1k.persistence.entity.Toy;
 import com.k1fl1k.persistence.repository.GenericJdbcRepository;
 import com.k1fl1k.persistence.repository.contract.TableNames;
 import com.k1fl1k.persistence.repository.contract.ToyRepository;
-import com.k1fl1k.persistence.repository.mapper.impl.ManufactureRowMapper;
 import com.k1fl1k.persistence.repository.mapper.impl.ToyRowMapper;
 import com.k1fl1k.persistence.util.ConnectionManager;
 import java.util.List;
@@ -14,19 +13,15 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class ToyRepositoryImpl extends GenericJdbcRepository<Toy> implements ToyRepository {
-    private final ConnectionManager connectionManager;
-    private final ManufactureRowMapper manufactureRowMapper;
+
     private final JdbcManyToMany<Toy> jdbcManyToMany;
     private final ToyRowMapper toyRowMapper;
 
     public ToyRepositoryImpl(
         ConnectionManager connectionManager,
         ToyRowMapper toyRowMapper,
-        ManufactureRowMapper manufactureRowMapper,
         JdbcManyToMany<Toy> jdbcManyToMany) {
         super(connectionManager, toyRowMapper, TableNames.TOY.getName());
-        this.connectionManager = connectionManager;
-        this.manufactureRowMapper = manufactureRowMapper;
         this.jdbcManyToMany = jdbcManyToMany;
         this.toyRowMapper = toyRowMapper;
     }
