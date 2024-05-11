@@ -19,7 +19,6 @@ public class AuthenticationService {
     }
 
     public boolean authenticate(String login, String password) {
-        // Перевіряємо, чи вже існує аутентифікований користувач
         if (user != null) {
             throw new UserAlreadyAuthenticatedException(
                 STR."Ви вже авторизувалися як: \{user.login()}");
