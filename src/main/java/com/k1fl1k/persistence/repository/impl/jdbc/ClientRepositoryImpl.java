@@ -85,7 +85,7 @@ public class ClientRepositoryImpl extends GenericJdbcRepository<Client> implemen
                 clientId,
                 selectClientSql,
                 clientRowMapper,
-                "Помилка пошуку клієта: " + UsersRole.toString()
+                "Помилка пошуку клієта: " + UsersRole
             );
         } else {
             return Set.of();

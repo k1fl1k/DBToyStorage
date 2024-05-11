@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CartRepositoryImpl extends GenericJdbcRepository<Cart> implements CartRepository {
 
-    private final ConnectionManager connectionManager;
     private final CartRowMapper cartRowMapper;
     private final JdbcManyToMany<Cart> jdbcManyToMany;
 
@@ -25,7 +24,6 @@ public class CartRepositoryImpl extends GenericJdbcRepository<Cart> implements C
         CartRowMapper cartRowMapper,
         JdbcManyToMany<Cart> jdbcManyToMany) {
         super(connectionManager, cartRowMapper, TableNames.CART.getName());
-        this.connectionManager = connectionManager;
         this.cartRowMapper = cartRowMapper;
         this.jdbcManyToMany = jdbcManyToMany;
     }

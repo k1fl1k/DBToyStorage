@@ -5,7 +5,6 @@ import com.k1fl1k.persistence.repository.GenericJdbcRepository;
 import com.k1fl1k.persistence.repository.contract.CategoryRepository;
 import com.k1fl1k.persistence.repository.contract.TableNames;
 import com.k1fl1k.persistence.repository.mapper.impl.CategoryRowMapper;
-import com.k1fl1k.persistence.repository.mapper.impl.ToyRowMapper;
 import com.k1fl1k.persistence.util.ConnectionManager;
 import java.util.List;
 import java.util.Set;
@@ -15,18 +14,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CategoryRepositoryImpl extends GenericJdbcRepository<Category> implements
     CategoryRepository {
-    private final ToyRowMapper toyRowMapper;
     private final CategoryRowMapper categoryRowMapper;
     private final JdbcManyToMany<Category> jdbcManyToMany;
 
     public CategoryRepositoryImpl(
         ConnectionManager connectionManager,
         CategoryRowMapper rowMapper,
-        ToyRowMapper toyRowMapper,
         CategoryRowMapper categoryRowMapper,
         JdbcManyToMany<Category> jdbcManyToMany) {
         super(connectionManager, rowMapper, TableNames.CATEGORY.getName());
-        this.toyRowMapper = toyRowMapper;
         this.jdbcManyToMany = jdbcManyToMany;
         this.categoryRowMapper = categoryRowMapper;
     }
