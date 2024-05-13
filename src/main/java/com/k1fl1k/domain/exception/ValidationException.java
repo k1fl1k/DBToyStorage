@@ -22,6 +22,6 @@ public class ValidationException extends RuntimeException {
 
     public static ValidationException create(String suffix,
         Set<? extends ConstraintViolation<?>> violations) {
-        return new ValidationException(STR."Помилка валідації при \{suffix}", violations);
+        return new ValidationException("Помилка валідації при" + suffix, violations);
     }
 }

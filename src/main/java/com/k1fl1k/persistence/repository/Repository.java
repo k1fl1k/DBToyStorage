@@ -12,6 +12,7 @@ public interface Repository<T extends Entity> {
 
     Optional<T> findBy(String column, Object value);
 
+    Optional<T> findByLogin(String column, Object value);
     Set<T> findAll();
     Set<T> findAllWhere(String whereQuery);
 

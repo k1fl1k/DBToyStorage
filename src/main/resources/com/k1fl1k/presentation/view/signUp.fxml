@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity"
+  maxWidth="-Infinity"
+  prefHeight="250.0"
+  prefWidth="500.0"
+  xmlns="http://javafx.com/javafx/17.0.2-ea"
+  xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="com.k1fl1k.presentation.controller.SignUpController">
+
+  <VBox alignment="CENTER" maxHeight="300" maxWidth="300" spacing="20.0">
+    <HBox alignment="CENTER_LEFT" spacing="40.0">
+      <Label text="ID:" />
+      <Label fx:id="idField" />
+    </HBox>
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+      <Label text="Login:" />
+      <TextField fx:id="loginField" />
+    </HBox>
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+      <Label text="Password:" />
+      <PasswordField fx:id="passwordField" />
+    </HBox>
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+      <Label text="Role:" />
+      <ComboBox fx:id="roleComboBox" />
+    </HBox>
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+      <Label text="Name:" />
+      <TextField fx:id="nameField" />
+    </HBox>
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+      <Label fx:id="phoneNumberLabel" text="Phone Number:" visible="false" />
+      <TextField fx:id="phoneNumberField" visible="false" />
+    </HBox>
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+      <Label fx:id="addressLabel" text="Address:" visible="false" />
+      <TextField fx:id="addressField" visible="false" />
+    </HBox>
+    <HBox alignment="BOTTOM_LEFT" spacing="10.0">
+      <Button onAction="#onSaveButtonClicked" text="Save" />
+      <Button onAction="#onCancelButtonClicked" text="Cancel" />
+    </HBox>
+  </VBox>
+
+</AnchorPane>

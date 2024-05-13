@@ -1,11 +1,10 @@
 package com.k1fl1k.domain.service.impl;
 
 import com.k1fl1k.domain.exception.UserAlreadyAuthenticatedException;
-import com.k1fl1k.domain.exception.AuthenticationException;
 import com.k1fl1k.persistence.context.factory.PersistenceContext;
 import com.k1fl1k.persistence.entity.Users;
 import com.k1fl1k.persistence.repository.contract.UserRepository;
-import com.password4j.Password;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,16 +23,18 @@ public class AuthenticationService {
                 STR."Ви вже авторизувалися як: \{user.login()}");
         }
 
-        Users foundedUser = userRepository.findByLogin(login)
-            .orElseThrow(AuthenticationException::new);
-
-        if (!Password.check(password, foundedUser.password()).withBcrypt()) {
-            return false;
+        Optional<Users> optionalUser = userRepository.findByLogin(login);
+        if (optionalUser.isPresent()) {
+            Users foundedUser = optionalUser.get();
+            if (password.equals(foundedUser.getPassword())) {
+                user = foundedUser;
+                return true;
+            }
         }
 
-        user = foundedUser;
-        return true;
+        return false;
     }
+
 
     public boolean isAuthenticated() {
         return user != null;

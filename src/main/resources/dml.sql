@@ -23,15 +23,15 @@ VALUES ('Лялька Барбі', 'Прекрасна лялька Барбі �
 
 -- Додавання користувачів
 INSERT INTO users (Name, Login, Password, Role)
-VALUES ('Адміністратор', 'admin', 'admin123', 'адміністратор'),
-       ('Марія Сидорова', 'manager', 'manager123', 'менеджер'),
-       ('Іван Петров', 'client1', 'client123', 'клієнт');
+VALUES ('Адміністратор', 'admin', 'admin123', 'admin'),
+       ('Марія Сидорова', 'manager', 'manager123', 'moder'),
+       ('Іван Петров', 'client1', 'client123', 'client');
 
 -- Додавання клієнтів
 INSERT INTO client (Name, Address, Phone)
-SELECT Name, 'вул. Головна, 1', '+1234567890' FROM users WHERE role = 'клієнт'
+SELECT Name, 'вул. Головна, 1', '+1234567890' FROM users WHERE role = 'client'
 UNION ALL
-SELECT Name, 'просп. Центральний, 5', '+0987654321' FROM users WHERE role = 'менеджер';
+SELECT Name, 'просп. Центральний, 5', '+0987654321' FROM users WHERE role = 'moder';
 
 
 
@@ -42,5 +42,5 @@ VALUES ('М`які іграшки', (SELECT id FROM category WHERE name = 'Ля�
        ('Іграшкові машинки', (SELECT id FROM category WHERE name = 'Транспорт'));
 
 INSERT INTO users (id, login, password, role, name)
-VALUES ('018f39f9-1826-7cb9-9775-feee72794e6a', 'mike_wilson1', 'mike.wilson@gmail.com', 'клієнт', 'password5'),
-       ('018f39f9-05de-704c-bdc4-9fb5e1432e19', 'emily_brown2', 'emily.brown2@gmail.com', 'менеджер', 'password5');
+VALUES ('018f39f9-1826-7cb9-9775-feee72794e6a', 'mike_wilson1', 'password5', 'client',  'mike.wilson'),
+       ('018f39f9-05de-704c-bdc4-9fb5e1432e19', 'emily_brown2', 'password5', 'moder', 'emily.brown123');

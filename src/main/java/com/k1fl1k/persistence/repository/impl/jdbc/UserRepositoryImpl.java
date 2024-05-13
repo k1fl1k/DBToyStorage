@@ -40,6 +40,6 @@ public class UserRepositoryImpl extends GenericJdbcRepository<Users> implements 
 
     @Override
     public Optional<Users> findByLogin(String login) {
-        return findBy("login", login);
+        return findByLogin("login", login);
     }
 }

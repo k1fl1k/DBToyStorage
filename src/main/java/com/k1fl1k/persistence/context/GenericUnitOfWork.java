@@ -2,11 +2,13 @@ package com.k1fl1k.persistence.context;
 
 
 import com.k1fl1k.persistence.entity.Entity;
+import com.k1fl1k.persistence.exception.EntityNotFoundException;
 import com.k1fl1k.persistence.repository.Repository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ public abstract class GenericUnitOfWork<T extends Entity> implements UnitOfWork<
     final Logger LOGGER = LoggerFactory.getLogger(GenericUnitOfWork.class);
     private final Map<UnitActions, List<T>> context;
     private final Repository<T> repository;
+    private Set<T> entities;
 
     protected GenericUnitOfWork(Repository<T> repository) {
         this.repository = repository;
@@ -79,16 +82,16 @@ public abstract class GenericUnitOfWork<T extends Entity> implements UnitOfWork<
 
     private void commitInsert() {
         var entitiesToBeInserted = context.get(UnitActions.INSERT);
-        repository.save(entitiesToBeInserted);
+        entities = repository.save(entitiesToBeInserted);
         for (var entity : entitiesToBeInserted) {
-            LOGGER.info("Inserting a new entity to table.");
+            LOGGER.info(STR."Inserting a new entity \{entity} from \{entitiesToBeInserted} to table.");
             repository.save(entity);
         }
     }
 
     private void commitModify() {
         var modifiedEntities = context.get(UnitActions.MODIFY);
-        repository.save(modifiedEntities);
+        entities = repository.save(modifiedEntities);
         for (var entity : modifiedEntities) {
             LOGGER.info("Modifying {} in table.", entity.id());
             repository.save(entity);
@@ -102,6 +105,20 @@ public abstract class GenericUnitOfWork<T extends Entity> implements UnitOfWork<
             LOGGER.info("Deleting {} from table.", entity.id());
             repository.delete(entity.id());
         }
+    }
+
+    public T getEntity(UUID id) {
+        return entities.stream().filter(e -> e.id().equals(id)).findFirst()
+            .orElseThrow(() -> new EntityNotFoundException(
+                "Спочатку потрібно зробити операцію додавання чи оновлення. Або це дивна помилка..."));
+    }
+
+    public T getEntity() {
+        return entities.stream().findFirst().orElseThrow();
+    }
+
+    public Set<T> getEntities() {
+        return entities;
     }
 }
 

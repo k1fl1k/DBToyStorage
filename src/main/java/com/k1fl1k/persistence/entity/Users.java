@@ -13,10 +13,13 @@ public record Users(UUID id,
         return this.login.compareTo(Users.login);
     }
 
+    public String getPassword() { return this.password;
+    }
+
     public enum UsersRole { // Перейменовано Role на UsersRole
-        ADMIN("адміністратор"),
-        MODER("менеджер"),
-        CLIENT("клієнт");
+        ADMIN("admin"),
+        MODER("moder"),
+        CLIENT("client");
 
         String roleName;
 

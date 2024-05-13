@@ -1,5 +1,6 @@
-package com.k1fl1k.persistence;
+package com.k1fl1k;
 
+import com.k1fl1k.persistence.ApplicationConfig;
 import com.k1fl1k.persistence.context.factory.PersistenceContext;
 import com.k1fl1k.persistence.entity.Users;
 import com.k1fl1k.persistence.entity.Users.UsersRole;
@@ -11,7 +12,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Main {
 
     public static void main(String[] args) {
-        var context = new AnnotationConfigApplicationContext(PersistenceConfig.class);
+        var context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
         var connectionManager = context.getBean(ConnectionManager.class);
         var databaseInitializer = context.getBean(DatabaseInitializer.class);
 

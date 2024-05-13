@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="300.0" prefWidth="300.0"
+  xmlns="http://javafx.com/javafx/17.0.2-ea"
+  xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="com.k1fl1k.presentation.controller.SignInController">
+
+  <!-- Вертикальний контейнер для розміщення елементів -->
+  <VBox alignment="CENTER" spacing="10" />
+
+ <!-- Поле для введення логіну -->
+ <TextField fx:id="usernameField" layoutX="76.0" layoutY="87.0" promptText="Логін" />
+
+ <!-- Поле для введення пароля -->
+ <PasswordField fx:id="passwordField" layoutX="76.0" layoutY="125.0" promptText="Пароль" />
+
+ <!-- Кнопка для входу -->
+ <Button layoutX="125.0" layoutY="188.0" onAction="#signIn" text="Увійти" />
+
+ <!-- Горизонтальний контейнер для кнопок реєстрації та виходу -->
+ <HBox layoutX="83.0" layoutY="223.0" spacing="10">
+
+   <!-- Кнопка для переходу на сторінку реєстрації -->
+   <Button onAction="#goToRegistration" text="Реєстрація" />
+
+   <!-- Кнопка для виходу -->
+   <Button onAction="#exit" text="Вийти" />
+
+ </HBox>
+
+</AnchorPane>

@@ -54,6 +54,31 @@ public abstract class GenericJdbcRepository<T extends Entity> implements Reposit
         return findBy("id", id);
     }
 
+    public Optional<T> findByLogin(String column, Object value) {
+        logger.info("Finding entity by {}: {}", column, value);
+
+        final String sql = STR. """
+        SELECT *
+          FROM users
+         WHERE \{
+            column } = ?
+    """ ;
+
+        try (Connection connection = connectionManager.get();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setObject(1, value.toString()); // Передача значення у вигляді рядка
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.ofNullable(rowMapper.mapRow(resultSet));
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            logger.error("Error while finding entity by {}: {}", column, value, e);
+            return Optional.empty();
+        }
+    }
+
 
     @Override
     public Optional<T> findBy(String column, Object value) {
@@ -133,9 +158,9 @@ public abstract class GenericJdbcRepository<T extends Entity> implements Reposit
         List<Object> values = tableValues(entity);
 
         T newEntity;
-        if (Objects.isNull(entity.id())) {
+        if (!Objects.isNull(entity.id())) {
             UUID newId = UUID.randomUUID();
-            values.addFirst(newId);
+            values.addFirst(entity.id());
             try {
                 newEntity = insert(values);
                 logger.info(newEntity.toString());

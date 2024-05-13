@@ -33,9 +33,9 @@ CREATE TABLE Toy (
 
 CREATE TABLE users (
                         id              UUID            PRIMARY KEY DEFAULT uuid_generate_v4(),
-                        login           VARCHAR(32)    NOT NULL UNIQUE,
+                        login           VARCHAR(32)     NOT NULL UNIQUE,
                         password        VARCHAR(255)    NOT NULL,
-                        role            VARCHAR(20)     CHECK (role IN ('адміністратор', 'менеджер', 'клієнт')) NOT NULL,
+                        role            VARCHAR(20)     CHECK (role IN ('admin', 'moder', 'client')) NOT NULL,
                         name            VARCHAR(64)     NOT NULL
 );
 
@@ -48,7 +48,7 @@ CREATE TABLE Sections (
 CREATE TABLE Client (
                         id              UUID            PRIMARY KEY DEFAULT uuid_generate_v4(),
                         name            VARCHAR(64)     NOT NULL,
-                        phone           VARCHAR(20)     NOT NULL UNIQUE,
+                        phone           VARCHAR(64)     NOT NULL UNIQUE,
                         address         TEXT            NOT NULL UNIQUE
 );
 

@@ -19,10 +19,12 @@ public final class ConnectionManager {
     private static final String PASSWORD_KEY = "db.password";
     private static final String POOL_SIZE_KEY = "db.pool.size";
     private static final Integer DEFAULT_POOL_SIZE = 10;
+    private final PropertyManager propertyManager;
     private BlockingDeque<Connection> pool;
     private List<Connection> sourceConnections;
 
-    public ConnectionManager() {
+    public ConnectionManager(PropertyManager propertyManager) {
+        this.propertyManager = propertyManager;
         initConnectionPool();
     }
 

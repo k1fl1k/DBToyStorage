@@ -20,7 +20,7 @@ public final class PropertyManager {
 
     private void loadProperties(){
         try (InputStream applicationProperties = PropertyManager.class.getClassLoader()
-        .getResourceAsStream("application.properties")) {
+            .getResourceAsStream("application.properties")) {
             PROPERTIES.load(applicationProperties);
         } catch (IOException e){
             //LOGGER.error("failed to read properties. %s".formatted(e));
