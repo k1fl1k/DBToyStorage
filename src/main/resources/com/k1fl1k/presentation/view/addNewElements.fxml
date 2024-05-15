@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.k1fl1k.presentation.controller.AddNewElementsController">
+
+  <VBox layoutY="34.0" prefHeight="339.0" prefWidth="279.0" spacing="20">
+    <HBox>
+    <TextField fx:id="textField1" layoutX="50" layoutY="50" promptText="Введіть текст 1" />
+    </HBox>
+    <HBox>
+    <TextField fx:id="textField2" layoutX="50" layoutY="100" promptText="Введіть текст 2" />
+    </HBox>
+    <HBox>
+    <TextField fx:id="textField3" layoutX="50" layoutY="150" promptText="Введіть текст 3" />
+    </HBox>
+    <HBox>
+    <ComboBox fx:id="comboBox1" layoutX="50" layoutY="200" />
+    </HBox>
+    <HBox>
+    <ComboBox fx:id="comboBox2" layoutX="50" layoutY="250" />
+    </HBox>
+    <HBox alignment="BOTTOM_LEFT" spacing="10.0">
+      <Button onAction="#onSave" text="Save" />
+      <Button onAction="#onCancel" text="Cancel" />
+    </HBox>
+  </VBox>
+
+</AnchorPane>

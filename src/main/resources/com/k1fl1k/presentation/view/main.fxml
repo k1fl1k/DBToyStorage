@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.k1fl1k.presentation.controller.MainController">
+
+  <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="50">
+    <Label fx:id="userLabel" layoutX="10.0" layoutY="10.0" text="User: " />
+    <Label fx:id="accessLevelLabel" layoutX="10.0" layoutY="30.0" text="Access Level: " />
+  </HBox>
+  <!-- Кнопки для секцій -->
+  <VBox fx:id="sectionButtons" layoutX="14.0" layoutY="22.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="300.0" prefWidth="210.0" spacing="5" />
+  <VBox fx:id="categoriesButtons" layoutX="195.0" layoutY="22.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="300.0" prefWidth="210.0" spacing="5" />
+  <VBox fx:id="toysButtons" layoutX="376.0" layoutY="22.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="300.0" prefWidth="210.0" spacing="5" />
+  <HBox layoutX="14.0" layoutY="321.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="65.0" prefWidth="572.0" spacing="10">
+    <Button fx:id="cartButton" onAction="#openCart" text="Корзина" />
+    <Button fx:id="addCategoryButton" onAction="#addCategory" text="Додати категорію" />
+    <Button fx:id="addToyButton" onAction="#addToy" text="Додати іграшку" />
+    <Button fx:id="addSectionButton" onAction="#addSection" text="Додати секцію" />
+    <Button fx:id="exitButton" onAction="#exit" text="Вихід" />
+  </HBox>
+</AnchorPane>

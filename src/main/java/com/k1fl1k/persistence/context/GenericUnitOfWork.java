@@ -108,14 +108,23 @@ public abstract class GenericUnitOfWork<T extends Entity> implements UnitOfWork<
     }
 
     public T getEntity(UUID id) {
-        return entities.stream().filter(e -> e.id().equals(id)).findFirst()
-            .orElseThrow(() -> new EntityNotFoundException(
-                "Спочатку потрібно зробити операцію додавання чи оновлення. Або це дивна помилка..."));
+        if (entities.isEmpty()) {
+            throw new EntityNotFoundException("No entities available");
+        }
+        return entities.stream()
+            .filter(e -> e.id().equals(id))
+            .findFirst()
+            .orElseThrow(() -> new EntityNotFoundException("Entity not found with id: " + id));
     }
 
+
     public T getEntity() {
-        return entities.stream().findFirst().orElseThrow();
+        if (entities.isEmpty()) {
+            throw new EntityNotFoundException("No entities available");
+        }
+        return entities.stream().findFirst().orElseThrow(() -> new EntityNotFoundException("No entity found"));
     }
+
 
     public Set<T> getEntities() {
         return entities;

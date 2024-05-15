@@ -1,6 +1,7 @@
 package com.k1fl1k.persistence.context;
 
 import com.k1fl1k.persistence.entity.Entity;
+import java.util.Set;
 import java.util.UUID;
 
 public interface UnitOfWork<T extends Entity> {
@@ -17,4 +18,10 @@ public interface UnitOfWork<T extends Entity> {
     void registerDeleted(UUID id);
 
     void commit();
+
+    T getEntity(UUID id);
+
+    T getEntity();
+
+    Set<T> getEntities();
 }

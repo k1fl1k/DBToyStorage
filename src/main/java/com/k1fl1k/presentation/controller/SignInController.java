@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 
@@ -49,14 +50,12 @@ public class SignInController {
     public void initialize() {
 
     }
-
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setContentText(message);
         alert.showAndWait();
     }
-
     @FXML
     private void signIn() {
         String login = usernameField.getText();
@@ -67,6 +66,24 @@ public class SignInController {
 
             if (authenticated) {
                 showAlert(Alert.AlertType.INFORMATION, "Успіх", "Вхід виконано успішно!");
+
+                // Завантаження відображення вікна Main
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/k1fl1k/presentation/view/main.fxml"));
+                loader.setControllerFactory(springContext::getBean);
+                Parent root = loader.load();
+                MainController mainController = loader.getController();
+
+                mainController.setCurrentUser(login);
+                // Показ вікна Main
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/k1fl1k/presentation/icon.png")));
+                stage.setTitle("Головне вікно");
+                stage.show();
+
+                // Закриття поточного вікна авторизації
+                Stage currentStage = (Stage) usernameField.getScene().getWindow();
+                currentStage.close();
             } else {
                 showAlert(Alert.AlertType.ERROR, "Помилка", "Невірний логін або пароль.");
             }
@@ -74,8 +91,11 @@ public class SignInController {
             showAlert(Alert.AlertType.ERROR, "Помилка", e.getMessage());
         } catch (AuthenticationException e) {
             showAlert(Alert.AlertType.ERROR, "Помилка", "Невірний логін або пароль.");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
+
 
     @FXML
     private void goToRegistration(ActionEvent event) {
@@ -93,16 +113,18 @@ public class SignInController {
                 .getResourceAsStream("/com/k1fl1k/presentation/icon.png")));
             stage.setTitle("Реєстрація");
 
-            ((Node) event.getSource()).getScene().getWindow().hide();
+            stage.initModality(Modality.APPLICATION_MODAL);
 
-            stage.show();
+            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
+
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     @FXML
     private void exit() {
-
+        Stage stage = (Stage) exitButton.getScene().getWindow();
+        stage.close();
     }
 }

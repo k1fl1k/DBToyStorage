@@ -16,8 +16,7 @@ public class ClientRowMapper implements RowMapper<Client> {
             UUID.fromString(rs.getString("id")),
             rs.getString("name"),
             rs.getString("phone"),
-            rs.getString("address"),
-            UUID.fromString(rs.getString("section_id"))
+            rs.getString("address")
         );
     }
 }

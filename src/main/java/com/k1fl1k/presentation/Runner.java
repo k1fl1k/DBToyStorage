@@ -1,5 +1,7 @@
 package com.k1fl1k.presentation;
 
+import atlantafx.base.theme.NordDark;
+import atlantafx.base.theme.NordLight;
 import com.k1fl1k.persistence.ApplicationConfig;
 import com.k1fl1k.persistence.util.ConnectionManager;
 import com.k1fl1k.persistence.util.DatabaseInitializer;
@@ -11,17 +13,20 @@ import  javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 public class Runner extends Application {
 
     public static AnnotationConfigApplicationContext springContext;
 
     @Override
     public void start(Stage stage) throws Exception {
+        Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
+        Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
         var fxmlLoader = new SpringFXMLLoader(springContext);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
         var mainFxmlResource = Runner.class.getResource("view/signIn.fxml");
         Parent parent = (Parent) fxmlLoader.load(mainFxmlResource);
-        Scene scene = new Scene(parent, 300, 300);
+        Scene scene = new Scene(parent, 400, 370);
         scene.setFill(Color.web("#8d642c"));
         stage.setTitle("Склад іграшок");
         stage.setScene(scene);

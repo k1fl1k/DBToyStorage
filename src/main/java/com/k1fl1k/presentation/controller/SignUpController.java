@@ -13,12 +13,15 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
 public class SignUpController {
+    private static final Logger logger = LoggerFactory.getLogger(SignUpController.class);
     @Autowired
     private UserService userService;
     @FXML
@@ -42,6 +45,7 @@ public class SignUpController {
     private UserViewModel userViewModel;
 
     public SignUpController() {
+        // init
     }
 
     @FXML
@@ -55,10 +59,6 @@ public class SignUpController {
             "password123",
             UsersRole.CLIENT,
             "John Doe"
-            /*loginField.textProperty().get(),
-            passwordField.textProperty().get(),
-            UsersRole.CLIENT,
-            nameField.textProperty().get()*/
         );
         // Зв'язування властивостей ViewModel з View
         bindFieldsToViewModel();
@@ -90,7 +90,7 @@ public class SignUpController {
 
     @FXML
     private void onSaveButtonClicked() {
-        System.out.println("Saving User Data: " + userViewModel);
+        logger.info("Saving User Data: {}", userViewModel);
 
         UserStoreDto userStoreDto = new UserStoreDto(
             userViewModel.getId(),
@@ -103,7 +103,7 @@ public class SignUpController {
         userService.create(userStoreDto);
 
 
-        UUID id = UUID.randomUUID();
+        UUID id = userViewModel.getId();
         String name = userViewModel.getname();
         String phone = phoneNumberField.getText();
         String address = addressField.getText();
@@ -125,7 +125,7 @@ public class SignUpController {
             // Встановлення з'єднання з базою даних
             Connection connection = DriverManager.getConnection(url, user, password);
             // Підготовка SQL-запиту
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement(sql)
         ) {
             // Встановлюємо значення параметрів для запиту
             statement.setObject(1, id);
@@ -135,9 +135,9 @@ public class SignUpController {
 
             // Виконуємо запит на вставку даних
             statement.executeUpdate();
-            System.out.println("Клієнт успішно збережений у базі даних.");
+            logger.info("Клієнт успішно збережений у базі даних.");
         } catch (SQLException e) {
-            System.out.println("Помилка при збереженні клієнта у базі даних: " + e.getMessage());
+            logger.error("Помилка при збереженні клієнта у базі даних: {}", e.getMessage());
         }
     }
 

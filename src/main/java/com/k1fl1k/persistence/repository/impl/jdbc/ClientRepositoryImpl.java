@@ -50,8 +50,7 @@ public class ClientRepositoryImpl extends GenericJdbcRepository<Client> implemen
         return List.of(
             client.name(),
             client.phone(),
-            client.address(),
-            client.sectionId()
+            client.address()
         );
     }
 
@@ -62,7 +61,7 @@ public class ClientRepositoryImpl extends GenericJdbcRepository<Client> implemen
 
     @Override
     public Set<Client> findByUserRole(UsersRole UsersRole) {
-        final String selectUserIdSql = "SELECT id FROM users WHERE UserRole = ?";
+        final String selectUserIdSql = "SELECT id FROM users WHERE role = ?";
         final String selectClientSql = "SELECT * FROM client WHERE id = ?";
         UUID clientId = null;
 

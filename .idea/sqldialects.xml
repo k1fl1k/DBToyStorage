@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/src/main/java/com/k1fl1k/persistence/repository/impl/jdbc/ClientRepositoryImpl.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/k1fl1k/persistence/repository/GenericJdbcRepository.java" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/k1fl1k/persistence/repository/impl/jdbc/ClientRepositoryImpl.java" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/k1fl1k/presentation/controller/AddNewElementsController.java" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/k1fl1k/presentation/controller/CartController.java" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/k1fl1k/presentation/controller/MainController.java" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/k1fl1k/presentation/controller/SignUpController.java" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/ddl.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/dml.sql" dialect="PostgreSQL" />
   </component>
