@@ -110,17 +110,24 @@ public abstract class GenericJdbcRepository<T extends Entity> implements Reposit
         logger.info("Finding entity by {}: {}", column, value);
         final String sql =
             STR. """
-            SELECT *
-              FROM \{
+        SELECT *
+          FROM \{
                 tableName }
-             WHERE \{
+         WHERE \{
                 column } = ?
-        """ ;
+    """ ;
 
-        UUID id = (UUID) value;
         try (Connection connection = connectionManager.get();
             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setObject(1, id, Types.OTHER);
+            if (value instanceof UUID) {
+                statement.setObject(1, (UUID) value, Types.OTHER);
+            } else if (value instanceof String) {
+                statement.setString(1, (String) value);
+            } else {
+                // Handle other types or throw an exception
+                throw new IllegalArgumentException("Unsupported type for value: " + value.getClass());
+            }
+
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return Optional.ofNullable(rowMapper.mapRow(resultSet));
@@ -132,6 +139,7 @@ public abstract class GenericJdbcRepository<T extends Entity> implements Reposit
             return Optional.empty();
         }
     }
+
 
 
     @Override
