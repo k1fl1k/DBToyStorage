@@ -25,7 +25,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+/**
+ * The {@code MainController} class controls the main functionality of the application's user interface.
+ */
 @Component
 public class MainController {
 
@@ -61,11 +63,19 @@ public class MainController {
     private Connection connection;
 
     private final ConnectionManager connectionManager;
+
+    /**
+     * Constructs a new {@code MainController} with the specified {@code ConnectionManager}.
+     *
+     * @param connectionManager The connection manager to use.
+     */
     @Autowired
     public MainController(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }
-
+    /**
+     * Initializes the main controller.
+     */
     @FXML
     public void initialize() {
         setConnection(connection);
@@ -73,6 +83,11 @@ public class MainController {
         retrieveSections();
     }
 
+    /**
+     * Sets the current user.
+     *
+     * @param login The login of the current user.
+     */
     public void setCurrentUser(String login) {
         this.login = login;
         retrieveUserData();

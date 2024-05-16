@@ -11,6 +11,9 @@ import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 import org.springframework.stereotype.Component;
 
+/**
+ * Manages database connections and provides connection pooling functionality.
+ */
 @Component
 public final class ConnectionManager {
 
@@ -19,21 +22,33 @@ public final class ConnectionManager {
     private static final String PASSWORD_KEY = "db.password";
     private static final String POOL_SIZE_KEY = "db.pool.size";
     private static final Integer DEFAULT_POOL_SIZE = 10;
+
     private final PropertyManager propertyManager;
     private BlockingDeque<Connection> pool;
     private List<Connection> sourceConnections;
 
+    /**
+     * Constructs a ConnectionManager with the specified PropertyManager.
+     * @param propertyManager The PropertyManager to use for retrieving database connection properties
+     */
     public ConnectionManager(PropertyManager propertyManager) {
         this.propertyManager = propertyManager;
         initConnectionPool();
     }
 
+    /**
+     * Initializes the ConnectionManager after construction.
+     */
     @PostConstruct
     public void init(){
         loadDriver();
         initConnectionPool();
     }
 
+    /**
+     * Retrieves a connection from the connection pool.
+     * @return A database Connection
+     */
     public Connection get() {
         try {
             return pool.take();
@@ -42,6 +57,9 @@ public final class ConnectionManager {
         }
     }
 
+    /**
+     * Closes the connection pool by closing all source connections.
+     */
     public void closePool() {
         try {
             for (Connection sourceConnection : sourceConnections) {
@@ -52,6 +70,7 @@ public final class ConnectionManager {
         }
     }
 
+    // Loads the JDBC driver
     private void loadDriver() {
         try {
             String driverName = "org.postgresql.Driver";
@@ -61,20 +80,22 @@ public final class ConnectionManager {
         }
     }
 
+    // Opens a new database connection
     private Connection open() {
         try {
             return DriverManager.getConnection(
-                PropertyManager.get(URL_KEY),
-                PropertyManager.get(USERNAME_KEY),
-                PropertyManager.get(PASSWORD_KEY)
+                propertyManager.get(URL_KEY),
+                propertyManager.get(USERNAME_KEY),
+                propertyManager.get(PASSWORD_KEY)
             );
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    // Initializes the connection pool with a specified size
     private void initConnectionPool() {
-        String poolSize = PropertyManager.get(POOL_SIZE_KEY);
+        String poolSize = propertyManager.get(POOL_SIZE_KEY);
         int size = poolSize == null ? DEFAULT_POOL_SIZE : Integer.parseInt(poolSize);
         pool = new LinkedBlockingDeque<>(size);
         sourceConnections = new ArrayList<>(size);

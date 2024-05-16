@@ -12,7 +12,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.springframework.stereotype.Component;
-
+/**
+ * The {@code CartController} class controls the functionality of the shopping cart in the application's user interface.
+ */
 @Component
 public class CartController {
 
@@ -27,21 +29,36 @@ public class CartController {
     private final ConnectionManager connectionManager;
 
     private UUID userId;
-
+    /**
+     * Constructs a new {@code CartController} with the specified {@code ConnectionManager}.
+     *
+     * @param connectionManager The connection manager to use.
+     */
     public CartController(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }
-
+    /**
+     * Sets the user ID for the current cart.
+     *
+     * @param userId The user ID to set.
+     */
     public void setUserId(UUID userId) {
         this.userId = userId;
     }
 
+    /**
+     * Initializes the cart controller and displays product information in the cart.
+     */
     @FXML
     public void initialize() {
         setConnection(connection);
         displayProductInfo(userId);
     }
-
+    /**
+     * Sets the connection for the cart controller.
+     *
+     * @param connection The connection to set.
+     */
     public void setConnection(Connection connection) {
         this.connection = connectionManager.get();
     }

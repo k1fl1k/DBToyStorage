@@ -28,26 +28,45 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * A generic JDBC repository providing basic CRUD operations for entities.
+ *
+ * @param <T> The type of entity this repository manages.
+ */
 public abstract class GenericJdbcRepository<T extends Entity> implements Repository<T> {
 
     private static final Logger logger = LoggerFactory.getLogger(GenericJdbcRepository.class);
     private final ConnectionManager connectionManager;
     private final RowMapper<T> rowMapper;
     private final String tableName;
-
+    /**
+     * Constructs a new GenericJdbcRepository.
+     *
+     * @param connectionManager The connection manager used to obtain database connections.
+     * @param rowMapper         The row mapper used to map ResultSet rows to entity objects.
+     * @param tableName         The name of the database table associated with the entities.
+     */
     public GenericJdbcRepository(
         ConnectionManager connectionManager, RowMapper<T> rowMapper, String tableName) {
         this.connectionManager = connectionManager;
         this.rowMapper = rowMapper;
         this.tableName = tableName;
     }
-
+    /**
+     * Retrieves the row mapper used by this repository.
+     *
+     * @return The row mapper used by this repository.
+     */
     protected RowMapper<T> getRowMapper() {
         return rowMapper;
     }
 
-    // Переписати на аспекти spring Context
+    /**
+     * Finds an entity by its unique identifier.
+     *
+     * @param id The unique identifier of the entity.
+     * @return An Optional containing the entity if found, otherwise empty.
+     */
     @Override
     public Optional<T> findById(UUID id) {
         logger.info("Finding entity by id: {}", id);
@@ -79,7 +98,13 @@ public abstract class GenericJdbcRepository<T extends Entity> implements Reposit
         }
     }
 
-
+    /**
+     * Finds an entity by a specified column and value.
+     *
+     * @param column The name of the column to search by.
+     * @param value  The value to search for in the specified column.
+     * @return An Optional containing the entity if found, otherwise empty.
+     */
     @Override
     public Optional<T> findBy(String column, Object value) {
         logger.info("Finding entity by {}: {}", column, value);
@@ -130,7 +155,12 @@ public abstract class GenericJdbcRepository<T extends Entity> implements Reposit
                 "Error while retrieving entities from table: " + tableName + throwables);
         }
     }
-
+    /**
+     * Retrieves entities from the database based on a custom SQL query.
+     *
+     * @return A Set of entities retrieved from the database.
+     * @throws EntityNotFoundException if an exception occurs during database access.
+     */
     @Override
     public Set<T> findAll() {
         logger.info("Finding all entities");
@@ -152,7 +182,12 @@ public abstract class GenericJdbcRepository<T extends Entity> implements Reposit
                 String.format("Error while finding all entities from table: %s", tableName));
         }
     }
-
+    /**
+     * Saves an entity to the database.
+     *
+     * @param entity The entity to save.
+     * @return The saved entity.
+     */
     @Override
     public T save(final T entity) {
         List<Object> values = tableValues(entity);
@@ -412,6 +447,13 @@ public abstract class GenericJdbcRepository<T extends Entity> implements Reposit
         return results;
     }
 
+    /**
+     * Deletes an entity from the database by its ID.
+     *
+     * @param id The ID of the entity to delete.
+     * @return true if the entity was successfully deleted, false otherwise.
+     * @throws EntityDeleteException if an exception occurs during database access.
+     */
     @Override
     public boolean delete(UUID id) {
         final String sql =

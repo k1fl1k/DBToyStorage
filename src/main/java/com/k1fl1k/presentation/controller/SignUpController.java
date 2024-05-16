@@ -19,6 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.UUID;
 
+/**
+ * The {@code SignUpController} class is responsible for handling user sign-up actions
+ * in the presentation layer.
+ */
 @Component
 public class SignUpController {
     private static final Logger logger = LoggerFactory.getLogger(SignUpController.class);

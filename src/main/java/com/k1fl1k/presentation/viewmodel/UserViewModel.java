@@ -6,6 +6,10 @@ import javafx.beans.property.*;
 import java.util.UUID;
 import java.util.StringJoiner;
 
+/**
+ * The {@code UserViewModel} class represents the ViewModel for a user entity in the presentation layer.
+ * It encapsulates user properties such as ID, login, password, role, name, phone, and address.
+ */
 public class UserViewModel {
 
     private final ObjectProperty<UUID> id = new SimpleObjectProperty<>();
@@ -13,21 +17,22 @@ public class UserViewModel {
     private final StringProperty password = new SimpleStringProperty();
     private final ObjectProperty<UsersRole> role = new SimpleObjectProperty<>();
     private final StringProperty name = new SimpleStringProperty();
-    private final StringProperty phone = new SimpleStringProperty();
-    private final StringProperty address = new SimpleStringProperty();
+
+    /**
+     * Constructs a new {@code UserViewModel} with the specified parameters.
+     *
+     * @param id       The ID of the user.
+     * @param login    The login of the user.
+     * @param password The password of the user.
+     * @param role     The role of the user.
+     * @param name     The name of the user.
+     */
     public UserViewModel(UUID id, String login, String password, UsersRole role, String name) {
         this.id.set(id);
         this.login.set(login);
         this.password.set(password);
         this.role.set(role);
         this.name.set(name);
-    }
-
-    public UserViewModel(UUID id, String name, String phone, String address) {
-        this.id.set(id);
-        this.name.set(name);
-        this.phone.set(phone);
-        this.address.set(address);
     }
 
     public String getLogin() {
@@ -46,38 +51,9 @@ public class UserViewModel {
         this.name.set(name);
     }
 
-    public String getPhone() {
-        return phone.get();
-    }
-
-    public StringProperty phoneProperty() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone.set(phone);
-    }
-
-    public String getAddress() {
-        return address.get();
-    }
-
-    public StringProperty addressProperty() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address.set(address);
-    }
-
     public UUID getId() {
         return id.get();
     }
-
-    public ObjectProperty<UUID> idProperty() {
-        return id;
-    }
-
     public void setId(UUID id) {
         this.id.set(id);
     }
@@ -88,10 +64,6 @@ public class UserViewModel {
 
     public StringProperty loginProperty() {
         return login;
-    }
-
-    public void setlogin(String login) {
-        this.login.set(login);
     }
 
     public String getPassword() {
@@ -123,10 +95,6 @@ public class UserViewModel {
 
     public StringProperty nameProperty() {
         return name;
-    }
-
-    public void setname(String name) {
-        this.name.set(name);
     }
 
     @Override

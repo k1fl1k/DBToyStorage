@@ -17,7 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+/**
+ * The {@code AddNewElementsController} class controls the functionality of adding new elements
+ * to the application's database, such as toys, sections, and categories.
+ */
 @Component
 public class AddNewElementsController {
 
@@ -42,16 +45,28 @@ public class AddNewElementsController {
     private Connection connection;
 
     private final ConnectionManager connectionManager;
-
+    /**
+     * Constructs a new {@code AddNewElementsController} with the specified {@code ConnectionManager}.
+     *
+     * @param connectionManager The connection manager to use.
+     */
     @Autowired
     public AddNewElementsController(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }
-
+    /**
+     * Sets the connection for the controller.
+     *
+     * @param connection The connection to set.
+     */
     public void setConnection(Connection connection) {
         this.connection = connectionManager.get();
     }
-
+    /**
+     * Sets the type of the element to be added.
+     *
+     * @param elementType The type of the element.
+     */
     public void setElementType(String elementType) {
         this.elementType = elementType;
         updateElementVisibility();

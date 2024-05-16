@@ -9,8 +9,17 @@ import com.k1fl1k.persistence.util.DatabaseInitializer;
 import java.util.UUID;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+/**
+ * The {@code Main} class represents the main class of the program to demonstrate the functionality
+ * of the persistence module.
+ */
 public class Main {
 
+    /**
+     * The {@code main} method is the entry point of the program.
+     *
+     * @param args The command line arguments.
+     */
     public static void main(String[] args) {
         var context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
         var connectionManager = context.getBean(ConnectionManager.class);
@@ -19,9 +28,11 @@ public class Main {
         try {
             databaseInitializer.init();
             var persistenceContext = context.getBean(PersistenceContext.class);
+
+            // Adding new users
             persistenceContext.users.registerNew(
                 new Users(
-                    null, // UUID тепер на першому місці
+                    null, // UUID now at first place
                     "k1fl1k",
                     "password",
                     UsersRole.ADMIN,
@@ -37,6 +48,7 @@ public class Main {
 
             persistenceContext.users.commit();
 
+            // Modifying existing users
             persistenceContext.users.registerModified(
                 new Users(UUID.fromString("018f39f9-1826-7cb9-9775-feee72794e6a"),
                     "mike_wilson1",
@@ -55,6 +67,7 @@ public class Main {
 
             persistenceContext.users.commit();
 
+            // Deleting users
             persistenceContext.users.registerDeleted(
                 UUID.fromString("018f39f8-6850-75d3-b6b1-be865de4d061"));
             persistenceContext.users.registerDeleted(

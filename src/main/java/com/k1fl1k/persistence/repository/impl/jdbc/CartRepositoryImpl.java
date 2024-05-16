@@ -12,13 +12,21 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
-
+/**
+ * Implementation of the CartRepository interface using JDBC.
+ */
 @Repository
 public class CartRepositoryImpl extends GenericJdbcRepository<Cart> implements CartRepository {
 
     private final CartRowMapper cartRowMapper;
     private final JdbcManyToMany<Cart> jdbcManyToMany;
-
+    /**
+     * Constructs a new CartRepositoryImpl instance.
+     *
+     * @param connectionManager The ConnectionManager used to manage database connections.
+     * @param cartRowMapper     The CartRowMapper used to map ResultSet rows to Cart entities.
+     * @param jdbcManyToMany    The JdbcManyToMany utility class for handling many-to-many relationships.
+     */
     public CartRepositoryImpl(
         ConnectionManager connectionManager,
         CartRowMapper cartRowMapper,

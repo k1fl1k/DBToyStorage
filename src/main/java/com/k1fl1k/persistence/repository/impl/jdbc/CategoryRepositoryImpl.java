@@ -6,25 +6,35 @@ import com.k1fl1k.persistence.repository.contract.CategoryRepository;
 import com.k1fl1k.persistence.repository.contract.TableNames;
 import com.k1fl1k.persistence.repository.mapper.impl.CategoryRowMapper;
 import com.k1fl1k.persistence.util.ConnectionManager;
+
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
 import org.springframework.stereotype.Repository;
 
+/**
+ * Implementation of the CategoryRepository interface using JDBC.
+ */
 @Repository
-public class CategoryRepositoryImpl extends GenericJdbcRepository<Category> implements
-    CategoryRepository {
+public class CategoryRepositoryImpl extends GenericJdbcRepository<Category> implements CategoryRepository {
     private final CategoryRowMapper categoryRowMapper;
     private final JdbcManyToMany<Category> jdbcManyToMany;
 
+    /**
+     * Constructs a new CategoryRepositoryImpl instance.
+     *
+     * @param connectionManager The ConnectionManager used to manage database connections.
+     * @param categoryRowMapper The CategoryRowMapper used to map ResultSet rows to Category entities.
+     * @param jdbcManyToMany    The JdbcManyToMany utility class for handling many-to-many relationships.
+     */
     public CategoryRepositoryImpl(
         ConnectionManager connectionManager,
-        CategoryRowMapper rowMapper,
         CategoryRowMapper categoryRowMapper,
         JdbcManyToMany<Category> jdbcManyToMany) {
-        super(connectionManager, rowMapper, TableNames.CATEGORY.getName());
-        this.jdbcManyToMany = jdbcManyToMany;
+        super(connectionManager, categoryRowMapper, TableNames.CATEGORY.getName());
         this.categoryRowMapper = categoryRowMapper;
+        this.jdbcManyToMany = jdbcManyToMany;
     }
 
     @Override
@@ -40,20 +50,19 @@ public class CategoryRepositoryImpl extends GenericJdbcRepository<Category> impl
     @Override
     public Set<Category> findAllByToyId(UUID toyId) {
         final String sql = """
-        SELECT c.id,
-               c.name,
-               c.description
-          FROM category AS c
-               JOIN toy_category AS tc
-                 ON c.id = tc.category_id
-         WHERE tc.toy_id = ?;
-        """;
+                SELECT c.id,
+                       c.name,
+                       c.description
+                  FROM category AS c
+                       JOIN toy_category AS tc
+                         ON c.id = tc.category_id
+                 WHERE tc.toy_id = ?;
+                """;
 
-        // Assuming jdbcManyToMany is a JdbcManyToMany<Category>
         return jdbcManyToMany.getByPivot(
             toyId,
             sql,
-            categoryRowMapper, // Use CategoryRowMapper here
+            categoryRowMapper,
             "Error while getting all categories for toy id: " + toyId);
     }
 
@@ -66,7 +75,7 @@ public class CategoryRepositoryImpl extends GenericJdbcRepository<Category> impl
             WHERE id = ?;
             """;
         return jdbcManyToMany.executeUpdate(
-            categoryId, toyId, sql, "Помилка при додаванні категорії до іграшки");
+            toyId, categoryId, sql, "Error while adding category to toy");
     }
 
     @Override
@@ -78,7 +87,6 @@ public class CategoryRepositoryImpl extends GenericJdbcRepository<Category> impl
             WHERE id = ? AND category_id = ?;
             """;
         return jdbcManyToMany.executeUpdate(
-            toyId, categoryId, sql, "Помилка при видаленні категорії з іграшки");
+            toyId, categoryId, sql, "Error while removing category from toy");
     }
-
 }

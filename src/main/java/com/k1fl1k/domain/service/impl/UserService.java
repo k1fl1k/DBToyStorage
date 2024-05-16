@@ -10,18 +10,33 @@ import jakarta.validation.Validator;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class responsible for creating users based on UserStoreDto instances.
+ */
 @Service
 public class UserService {
 
     private final UserContext userContext;
     private final Validator validator;
 
+    /**
+     * Constructs a UserService with the provided PersistenceContext and Validator.
+     *
+     * @param persistenceContext The PersistenceContext containing the UserContext for managing user entities.
+     * @param validator          The Validator used for validating UserStoreDto instances.
+     */
     public UserService(PersistenceContext persistenceContext, Validator validator) {
         this.userContext = persistenceContext.users;
         this.validator = validator;
     }
 
-
+    /**
+     * Creates a new user based on the provided UserStoreDto.
+     *
+     * @param userStoreDto The UserStoreDto containing user data.
+     * @return The created Users object.
+     * @throws ValidationException if the provided UserStoreDto fails validation.
+     */
     public Users create(UserStoreDto userStoreDto) {
         var violations = validator.validate(userStoreDto);
         if (!violations.isEmpty()) {

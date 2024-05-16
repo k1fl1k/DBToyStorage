@@ -1,6 +1,5 @@
 package com.k1fl1k.persistence.context;
 
-
 import com.k1fl1k.persistence.entity.Entity;
 import com.k1fl1k.persistence.exception.EntityNotFoundException;
 import com.k1fl1k.persistence.repository.Repository;
@@ -13,6 +12,11 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A generic implementation of the Unit of Work pattern for managing entities and their changes.
+ *
+ * @param <T> The type of entity managed by this unit of work.
+ */
 public abstract class GenericUnitOfWork<T extends Entity> implements UnitOfWork<T> {
     final Logger LOGGER = LoggerFactory.getLogger(GenericUnitOfWork.class);
     private final Map<UnitActions, List<T>> context;
@@ -46,7 +50,7 @@ public abstract class GenericUnitOfWork<T extends Entity> implements UnitOfWork<
     public void registerDeleted(UUID id) {
         LOGGER.info("Registering {} for delete in context.", id);
         Entity entity = () -> id;
-        register((T)entity, UnitActions.DELETE);
+        register((T) entity, UnitActions.DELETE);
     }
 
     private void register(T entity, UnitActions operation) {
@@ -84,7 +88,7 @@ public abstract class GenericUnitOfWork<T extends Entity> implements UnitOfWork<
         var entitiesToBeInserted = context.get(UnitActions.INSERT);
         entities = repository.save(entitiesToBeInserted);
         for (var entity : entitiesToBeInserted) {
-            LOGGER.info(STR."Inserting a new entity \{entity} from \{entitiesToBeInserted} to table.");
+            LOGGER.info("Inserting a new entity {} to table.", entity);
             repository.save(entity);
         }
     }
@@ -117,7 +121,6 @@ public abstract class GenericUnitOfWork<T extends Entity> implements UnitOfWork<
             .orElseThrow(() -> new EntityNotFoundException("Entity not found with id: " + id));
     }
 
-
     public T getEntity() {
         if (entities.isEmpty()) {
             throw new EntityNotFoundException("No entities available");
@@ -125,9 +128,7 @@ public abstract class GenericUnitOfWork<T extends Entity> implements UnitOfWork<
         return entities.stream().findFirst().orElseThrow(() -> new EntityNotFoundException("No entity found"));
     }
 
-
     public Set<T> getEntities() {
         return entities;
     }
 }
-

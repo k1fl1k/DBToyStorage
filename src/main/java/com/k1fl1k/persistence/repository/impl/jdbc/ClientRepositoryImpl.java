@@ -8,6 +8,7 @@ import com.k1fl1k.persistence.repository.contract.ClientRepository;
 import com.k1fl1k.persistence.repository.contract.TableNames;
 import com.k1fl1k.persistence.repository.mapper.impl.ClientRowMapper;
 import com.k1fl1k.persistence.util.ConnectionManager;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,19 +17,30 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+
 import org.springframework.stereotype.Repository;
 
+/**
+ * Implementation of the ClientRepository interface using JDBC.
+ */
 @Repository
 public class ClientRepositoryImpl extends GenericJdbcRepository<Client> implements ClientRepository {
 
     private final ConnectionManager connectionManager;
     private final ClientRowMapper clientRowMapper;
-    private final JdbcManyToMany jdbcManyToMany;
+    private final JdbcManyToMany<Client> jdbcManyToMany;
 
+    /**
+     * Constructs a new ClientRepositoryImpl instance.
+     *
+     * @param connectionManager The ConnectionManager used to manage database connections.
+     * @param clientRowMapper   The ClientRowMapper used to map ResultSet rows to Client entities.
+     * @param jdbcManyToMany    The JdbcManyToMany utility class for handling many-to-many relationships.
+     */
     public ClientRepositoryImpl(
         ConnectionManager connectionManager,
         ClientRowMapper clientRowMapper,
-        JdbcManyToMany jdbcManyToMany) {
+        JdbcManyToMany<Client> jdbcManyToMany) {
         super(connectionManager, clientRowMapper, TableNames.CLIENT.getName());
         this.connectionManager = connectionManager;
         this.clientRowMapper = clientRowMapper;
@@ -60,7 +72,7 @@ public class ClientRepositoryImpl extends GenericJdbcRepository<Client> implemen
     }
 
     @Override
-    public Set<Client> findByUserRole(UsersRole UsersRole) {
+    public Set<Client> findByUserRole(UsersRole userRole) {
         final String selectUserIdSql = "SELECT id FROM users WHERE role = ?";
         final String selectClientSql = "SELECT * FROM client WHERE id = ?";
         UUID clientId = null;
@@ -68,7 +80,7 @@ public class ClientRepositoryImpl extends GenericJdbcRepository<Client> implemen
         try (Connection connection = connectionManager.get();
             PreparedStatement selectUserIdStatement = connection.prepareStatement(selectUserIdSql)) {
 
-            selectUserIdStatement.setString(1, UsersRole.toString());
+            selectUserIdStatement.setString(1, userRole.toString());
             ResultSet resultSet = selectUserIdStatement.executeQuery();
 
             if (resultSet.next()) {
@@ -76,7 +88,7 @@ public class ClientRepositoryImpl extends GenericJdbcRepository<Client> implemen
             }
 
         } catch (SQLException throwables) {
-            throw new EntityNotFoundException("Помилка пошуку клієта");
+            throw new EntityNotFoundException("Error searching for client");
         }
 
         if (clientId != null) {
@@ -84,7 +96,7 @@ public class ClientRepositoryImpl extends GenericJdbcRepository<Client> implemen
                 clientId,
                 selectClientSql,
                 clientRowMapper,
-                "Помилка пошуку клієта: " + UsersRole
+                "Error searching for client: " + userRole
             );
         } else {
             return Set.of();

@@ -20,7 +20,9 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
-
+/**
+ * The {@code SignInController} class handles the actions related to user sign-in in the presentation layer.
+ */
 @Component
 public class SignInController {
 
@@ -41,11 +43,17 @@ public class SignInController {
     @FXML
     private Button exitButton;
 
-
+    /**
+     * Constructs a new {@code SignInController} with the specified {@code AuthenticationService}.
+     *
+     * @param authenticationService The authentication service to use.
+     */
     public SignInController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
-
+    /**
+     * Initializes the sign-in controller.
+     */
     @FXML
     public void initialize() {
 
@@ -56,6 +64,11 @@ public class SignInController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+
+    /**
+     * Handles the sign-in action.
+     */
     @FXML
     private void signIn() {
         String login = usernameField.getText();
@@ -96,7 +109,11 @@ public class SignInController {
         }
     }
 
-
+    /**
+     * Redirects to the registration view when the registration button is clicked.
+     *
+     * @param event The action event.
+     */
     @FXML
     private void goToRegistration(ActionEvent event) {
         try {
@@ -122,6 +139,10 @@ public class SignInController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Exits the application when the exit button is clicked.
+     */
     @FXML
     private void exit() {
         Stage stage = (Stage) exitButton.getScene().getWindow();
