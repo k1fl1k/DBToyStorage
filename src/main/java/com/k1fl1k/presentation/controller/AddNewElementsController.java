@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 /**
  * The {@code AddNewElementsController} class controls the functionality of adding new elements
  * to the application's database, such as toys, sections, and categories.
@@ -45,6 +46,7 @@ public class AddNewElementsController {
     private Connection connection;
 
     private final ConnectionManager connectionManager;
+
     /**
      * Constructs a new {@code AddNewElementsController} with the specified {@code ConnectionManager}.
      *
@@ -54,6 +56,7 @@ public class AddNewElementsController {
     public AddNewElementsController(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }
+
     /**
      * Sets the connection for the controller.
      *
@@ -62,6 +65,7 @@ public class AddNewElementsController {
     public void setConnection(Connection connection) {
         this.connection = connectionManager.get();
     }
+
     /**
      * Sets the type of the element to be added.
      *
@@ -113,22 +117,18 @@ public class AddNewElementsController {
     private void updateElementVisibility() {
         switch (elementType) {
             case "toy":
-                setElementsVisibility(true, true,
-                    true, true, true);
+                setElementsVisibility(true, true, true, true, true);
                 populateComboBoxes();
                 break;
             case "sections":
-                setElementsVisibility(true, false,
-                    false, true, false);
+                setElementsVisibility(true, false, false, true, false);
                 populateComboBoxes();
                 break;
             case "category":
-                setElementsVisibility(true, true,
-                    false, false, false);
+                setElementsVisibility(true, true, false, false, false);
                 break;
             default:
-                setElementsVisibility(false, false,
-                    false, false, false);
+                setElementsVisibility(false, false, false, false, false);
                 break;
         }
     }
@@ -179,8 +179,7 @@ public class AddNewElementsController {
         UUID manufactureId = getManufactureID(manufactureName);
 
         String sql = "INSERT INTO toy (id, name, description, price, category_id, manufacture_id) VALUES (?, ?, ?, ?, ?, ?)";
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setObject(1, id);
             statement.setString(2, name);
             statement.setString(3, description);
@@ -188,7 +187,6 @@ public class AddNewElementsController {
             statement.setObject(5, categoryId);
             statement.setObject(6, manufactureId);
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -196,20 +194,16 @@ public class AddNewElementsController {
 
     private UUID getCategoryID(String categoryName) {
         String sql = "SELECT id FROM category WHERE name = ?";
-        UUID resultSet = getUuid(categoryName, sql);
-        if (resultSet != null) {
-            return resultSet;
-        }
-        return null; // Якщо не вдалося знайти id
+        return getUuid(categoryName, sql);
     }
 
-    private UUID getUuid(String categoryName, String sql) {
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, categoryName);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return UUID.fromString(resultSet.getString("id"));
+    private UUID getUuid(String name, String sql) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, name);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return UUID.fromString(resultSet.getString("id"));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -219,14 +213,8 @@ public class AddNewElementsController {
 
     private UUID getManufactureID(String manufactureName) {
         String sql = "SELECT id FROM manufacture WHERE name = ?";
-        UUID resultSet = getUuid(manufactureName, sql);
-        if (resultSet != null) {
-            return resultSet;
-        }
-        return null; // Якщо не вдалося знайти id
+        return getUuid(manufactureName, sql);
     }
-
-
 
     private void saveSection() throws SQLException {
         UUID id = UUID.randomUUID();
@@ -236,13 +224,11 @@ public class AddNewElementsController {
         UUID categoryId = getCategoryID(categoryName);
 
         String sql = "INSERT INTO sections (id, name, category_id) VALUES (?, ?, ?)";
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setObject(1, id);
             statement.setString(2, name);
             statement.setObject(3, categoryId);
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -251,20 +237,19 @@ public class AddNewElementsController {
     private void saveCategory() throws SQLException {
         UUID id = UUID.randomUUID();
         String name = textField1.getText();
-        String description =textField2.getText();
+        String description = textField2.getText();
 
         String sql = "INSERT INTO category (id, name, description) VALUES (?, ?, ?)";
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setObject(1, id);
             statement.setString(2, name);
             statement.setString(3, description);
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -274,7 +259,16 @@ public class AddNewElementsController {
 
     @FXML
     public void onCancel() {
+        CloseConnection();
         Stage currentStage = (Stage) textField1.getScene().getWindow();
         currentStage.close();
+    }
+
+    private void CloseConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

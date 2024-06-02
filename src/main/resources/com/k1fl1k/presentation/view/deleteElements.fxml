@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="274.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.k1fl1k.presentation.controller.DeleteElementsController">
+  <children>
+    <VBox alignment="CENTER" spacing="10.0">
+      <children>
+        <HBox alignment="CENTER" spacing="10.0">
+          <children>
+            <Label text="Виберіть тип елементу:" />
+            <CheckBox fx:id="categoryCheckBox" text="Категорії" />
+            <CheckBox fx:id="sectionCheckBox" text="Секції" />
+            <CheckBox fx:id="toyCheckBox" text="Іграшки" />
+          </children>
+        </HBox>
+        <Button fx:id="loadButton" onAction="#loadData" text="Завантажити дані" />
+        <ListView fx:id="dataListView" prefHeight="150.0" prefWidth="300.0" />
+        <Button fx:id="deleteButton" onAction="#deleteSelected" text="Видалити" />
+      </children>
+    </VBox>
+  </children>
+</AnchorPane>

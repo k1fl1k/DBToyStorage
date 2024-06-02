@@ -7,6 +7,7 @@ import com.k1fl1k.persistence.util.ConnectionManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -51,6 +52,8 @@ public class MainController {
 
     @FXML
     private Button addToyButton;
+    @FXML
+    private Button deleteButton;
 
     @FXML
     private Button addSectionButton;
@@ -131,6 +134,7 @@ public class MainController {
                     accessLevelLabel.setText("");
                 }
                 statement.close();
+                userResultSet.close();
             }
         } catch (SQLException e){
             throw new RuntimeException(e);
@@ -185,6 +189,7 @@ public class MainController {
                 categoriesButtons.getChildren().add(categoryButton);
             }
             statement.close();
+            categoryResultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -193,6 +198,7 @@ public class MainController {
 
 
     private void retrieveToys(String categoryId) {
+        toysButtons.getChildren().clear();
         try {
             Statement statement = connection.createStatement();
             ResultSet toyResultSet = statement.executeQuery(
@@ -317,5 +323,30 @@ public class MainController {
     @FXML
     private void addCategory() {
         addElementsWindow("category");
+    }
+
+    @FXML
+    public void delete() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/com/k1fl1k/presentation/view/deleteElements.fxml"));
+            loader.setControllerFactory(springContext::getBean);
+            Parent root = loader.load();
+
+            DeleteElementsController deleteElementsController = loader.getController();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.getIcons().add(new Image(getClass()
+                .getResourceAsStream("/com/k1fl1k/presentation/icon.png")));
+            stage.setTitle("Додавання елементів");
+
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            stage.showAndWait();
+            retrieveSections();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -9,13 +9,13 @@
 
   <VBox layoutY="34.0" prefHeight="339.0" prefWidth="279.0" spacing="20">
     <HBox>
-    <TextField fx:id="textField1" layoutX="50" layoutY="50" promptText="Введіть текст 1" />
+    <TextField fx:id="textField1" layoutX="50" layoutY="50" promptText="Назва" />
     </HBox>
     <HBox>
-    <TextField fx:id="textField2" layoutX="50" layoutY="100" promptText="Введіть текст 2" />
+    <TextField fx:id="textField2" layoutX="50" layoutY="100" promptText="Опис" />
     </HBox>
     <HBox>
-    <TextField fx:id="textField3" layoutX="50" layoutY="150" promptText="Введіть текст 3" />
+    <TextField fx:id="textField3" layoutX="50" layoutY="150" promptText="Ціна" />
     </HBox>
     <HBox>
     <ComboBox fx:id="comboBox1" layoutX="50" layoutY="200" />
