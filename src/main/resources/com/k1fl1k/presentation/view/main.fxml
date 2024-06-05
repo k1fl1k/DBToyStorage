@@ -12,11 +12,8 @@
   <HBox layoutX="13.0" layoutY="17.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="152.0" spacing="50">
     <Label fx:id="sectoinsLabel" layoutX="10.0" layoutY="10.0" text="Sections: " />
   </HBox>
-  <HBox layoutX="381.0" layoutY="17.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="152.0" spacing="50">
+  <HBox layoutX="223.0" layoutY="17.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="152.0" spacing="50">
     <Label fx:id="categoryLabel" layoutX="10.0" layoutY="10.0" text="Categories: " />
-  </HBox>
-  <HBox layoutX="194.0" layoutY="17.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="152.0" spacing="50">
-    <Label fx:id="toysLabel" layoutX="10.0" layoutY="10.0" text="Toys: " />
   </HBox>
   <!-- Кнопки для секцій -->
   <VBox fx:id="sectionButtons" layoutX="13.0" layoutY="40.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="300.0" prefWidth="210.0" spacing="5" />
@@ -29,5 +26,8 @@
     <Button fx:id="addSectionButton" onAction="#addSection" text="Додати секцію" />
     <Button fx:id="deleteButton" onAction="#delete" text="Видалити" />
     <Button fx:id="exitButton" onAction="#exit" text="Вихід" />
+  </HBox>
+  <HBox layoutX="411.0" layoutY="17.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="152.0" spacing="50">
+    <Label fx:id="toysLabel" layoutX="10.0" layoutY="10.0" text="Toys: " />
   </HBox>
 </AnchorPane>
