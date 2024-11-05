@@ -27,7 +27,7 @@ These instructions will guide you on how to set up and run the DBToyStorage appl
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/yourusername/DBToyStorage.git
+   git clone https://github.com/k1fl1k/DBToyStorage.git
    cd DBToyStorage
    ```
 
